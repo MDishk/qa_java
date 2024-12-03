@@ -5,7 +5,7 @@ import java.util.List;
 public class LionAlex extends Lion {
 
     public LionAlex(Feline feline) throws Exception {
-        super(feline, "Самец");
+        super(feline, "самец");
     }
 
     @Override

@@ -1,5 +1,6 @@
 import com.example.Feline;
 import com.example.Lion;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -14,38 +15,39 @@ public class LionTest {
     @Mock
     private Feline felineMock;
 
-    @Test
-    public void getKittensTest() throws Exception {
-        Mockito.when(felineMock.getKittens()).thenReturn(3);
-        Lion lion = new Lion(felineMock, "Самец");
-        assertEquals(3, lion.getKittens());
+    Lion lion;
+
+    @Before
+    public void initLion() throws Exception {
+        lion = new Lion(felineMock, "самец");
     }
 
     @Test
-    public void testDoesHaveManeMale() throws Exception {
-        Lion maleLion = new Lion(felineMock, "Самец");
-        assertEquals(true, maleLion.doesHaveMane());
+    public void getKittensTest() {
+        Mockito.when(felineMock.getKittens()).thenReturn(1);
+        assertEquals(1, lion.getKittens());
     }
 
     @Test
-    public void testDoesHaveManeFemale() throws Exception {
-        Lion femaleLion = new Lion(felineMock, "Самка");
-        assertEquals(false, femaleLion.doesHaveMane());
+    public void doesHaveManeMaleTest() {
+        assertEquals(true, lion.doesHaveMane());
     }
 
     @Test
-    public void invalidSexTest() throws Exception {
-        try {
-            new Lion(felineMock, "Неизвестный пол");
-        } catch (Exception e) {
-            assertEquals("Используйте допустимые значения пола животного - самец или самка", e.getMessage());
-        }
+    public void doesHaveManeFemaleTest() throws Exception {
+        lion = new Lion(felineMock, "самка");
+        assertEquals(false, lion.doesHaveMane());
+    }
+
+    @Test(expected = Exception.class)
+    public void doesHaveManeNotLionTest() throws Exception {
+        lion = new Lion(felineMock, "Неизвестный пол");
+        lion.doesHaveMane();
     }
 
     @Test
     public void getFoodTest() throws Exception {
         Mockito.when(felineMock.eatMeat()).thenReturn(List.of("Животные", "Птицы", "Рыба"));
-        Lion lion = new Lion(felineMock, "Самец");
         assertEquals(List.of("Животные", "Птицы", "Рыба"), lion.getFood());
     }
 }
